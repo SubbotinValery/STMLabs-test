@@ -21,18 +21,29 @@ export function Tooltip({
   offsetY = 10,
   delay = 300,
 }: TooltipProps) {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false); // контролирует монтирование
   const [coords, setCoords] = useState({ top: 0, left: 0 });
   const timeoutRef = useRef<number | null>(null);
+  const hideTimeoutRef = useRef<number | null>(null);
   const childRef = useRef<HTMLDivElement>(null);
 
   const handleMouseEnter = () => {
+    if (hideTimeoutRef.current) {
+      clearTimeout(hideTimeoutRef.current);
+      hideTimeoutRef.current = null;
+    }
+
     timeoutRef.current = setTimeout(() => {
       if (childRef.current) {
         const rect = childRef.current.getBoundingClientRect();
         const { top, left } = calculatePosition(rect, positionY, positionX, offsetX, offsetY);
         setCoords({ top, left });
-        setIsVisible(true);
+        setShouldRender(true);
+
+        requestAnimationFrame(() => {
+          setIsVisible(true);
+        });
       }
     }, delay);
   };
@@ -42,7 +53,12 @@ export function Tooltip({
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
+
     setIsVisible(false);
+
+    hideTimeoutRef.current = setTimeout(() => {
+      setShouldRender(false);
+    }, 300);
   };
 
   const calculatePosition = (
@@ -118,6 +134,13 @@ export function Tooltip({
     };
   }, [isVisible, positionY, positionX, offsetX, offsetY]);
 
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+    };
+  }, []);
+
   return (
     <>
       <div
@@ -129,10 +152,10 @@ export function Tooltip({
         {children}
       </div>
 
-      {isVisible &&
+      {shouldRender &&
         createPortal(
           <div
-            className={styles.tooltip}
+            className={`${styles.tooltip} ${isVisible ? styles.visible : ''}`}
             style={{
               position: 'fixed',
               top: coords.top,

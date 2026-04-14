@@ -28,7 +28,6 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
 
-  --transition: all 0.2s ease;
   --transition-fast: 0.2s;
   --transition-medium: 0.3s;
   --transition-slow: 0.4s;

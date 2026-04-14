@@ -10,7 +10,7 @@ interface UserAvatarProps {
 export function UserAvatar({ thumbnailUrl, mediumUrl, name }: UserAvatarProps) {
   return (
     <Tooltip
-      positionX="center"
+      positionX="right"
       positionY="center"
       content={
         <div>
@@ -18,7 +18,7 @@ export function UserAvatar({ thumbnailUrl, mediumUrl, name }: UserAvatarProps) {
         </div>
       }
     >
-      <img src={thumbnailUrl} alt={name} />
+      <img style={{ cursor: 'zoom-in' }} src={thumbnailUrl} alt={name} />
     </Tooltip>
   );
 }

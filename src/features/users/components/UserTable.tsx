@@ -4,19 +4,21 @@ import { useUsers } from '../hooks/useUsers';
 import { useDebouncedSearch } from '../hooks/useDebouncedSearch';
 import { UserSearch } from './UserSearch';
 import { userTableColumns } from '../config/userTableColumns';
+import { filterUsers } from '../utils/filterUsers';
 
 export function UserTable() {
   const { users, loading, error } = useUsers();
   const { searchQuery, debouncedQuery, setSearchQuery } = useDebouncedSearch(300);
 
   const filteredUsers = useMemo(() => {
-    if (!debouncedQuery.trim()) return users;
-
-    const query = debouncedQuery.toLowerCase().trim();
-    return users.filter(
-      (user) => user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query)
-    );
+    return filterUsers(users, debouncedQuery);
   }, [users, debouncedQuery]);
+
+  const getEmptyMessage = (): string => {
+    if (users.length === 0) return 'Список пользователей пуст';
+    if (debouncedQuery) return 'Пользователи не найдены';
+    return 'Нет данных';
+  };
 
   return (
     <div className="user-table-container">
@@ -26,7 +28,7 @@ export function UserTable() {
         data={filteredUsers}
         loading={loading}
         error={error}
-        emptyMessage="Пользователи не найдены"
+        emptyMessage={getEmptyMessage()}
       />
     </div>
   );

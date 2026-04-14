@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
+import styles from './Input.module.css';
 
 interface InputProps {
   value?: string;
@@ -54,34 +55,34 @@ export function Input({
   const showClearButton = clearable && currentValue.length > 0 && !disabled;
 
   return (
-    <div className={`input-wrapper ${className}`}>
-      {label && <label className="input-label">{label}</label>}
+    <div className={`${styles.container} ${className}`}>
+      {label && <label className={styles.label}>{label}</label>}
 
-      <div className={`input-container ${error ? 'has-error' : ''}`}>
+      <div className={`${styles.inputWrapper} ${error ? styles.error : ''}`}>
+        {icon && <span className={styles.icon}>{icon}</span>}
+
         <input
           type={type}
           value={currentValue}
           onChange={handleChange}
           placeholder={placeholder}
           disabled={disabled}
-          className="input-field"
+          className={styles.input}
         />
 
         {showClearButton && (
           <button
             type="button"
             onClick={handleClear}
-            className="input-clear"
+            className={styles.clearButton}
             aria-label="Очистить поле"
           >
-            <span className="input-icon-clear">{iconClear}</span>
+            {iconClear ? iconClear : '✕'}
           </button>
         )}
-
-        {icon && <span className="input-icon">{icon}</span>}
       </div>
 
-      {error && <span className="input-error">{error}</span>}
+      {error && <span className={styles.errorMessage}>{error}</span>}
     </div>
   );
 }

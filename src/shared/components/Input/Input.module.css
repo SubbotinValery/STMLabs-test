@@ -1,0 +1,86 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  width: 100%;
+  margin-bottom: var(--spacing-8);
+}
+
+.label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0 var(--spacing-3);
+  transition: all var(--transition-fast);
+  cursor: text;
+}
+
+.input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: var(--spacing-3) 0;
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+  outline: none;
+  width: 100%;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-lg);
+}
+
+.clearButton {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-md);
+  padding: var(--spacing-1);
+  border-radius: var(--radius-full);
+  transition: all var(--transition-fast);
+}
+
+.clearButton:hover {
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-tertiary);
+}
+
+.inputWrapper:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
+}
+
+.input:focus-visible {
+  border: none;
+  outline: none;
+}
+
+.input:disabled {
+  background-color: var(--color-bg-secondary);
+  cursor: not-allowed;
+  color: var(--color-text-muted);
+}
+
+.errorMessage {
+  font-size: var(--font-size-xs);
+  color: var(--color-danger);
+  margin-top: var(--spacing-1);
+}

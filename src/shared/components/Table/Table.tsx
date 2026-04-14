@@ -8,7 +8,7 @@ export interface Column<T> {
   render?: (value: unknown, item: T) => ReactNode;
 }
 
-interface TableProps<T> {
+interface TableProps<T extends { id: string | number }> {
   columns: Column<T>[];
   data: T[];
   loading?: boolean;
@@ -16,7 +16,7 @@ interface TableProps<T> {
   emptyMessage?: string;
 }
 
-export function Table<T>({
+export function Table<T extends { id: string | number }>({
   columns,
   data,
   loading = false,
@@ -53,8 +53,8 @@ export function Table<T>({
         </tr>
       </thead>
       <tbody>
-        {data.map((item, index) => (
-          <tr key={index}>
+        {data.map((item) => (
+          <tr key={item.id}>
             {columns.map((col) => (
               <td key={col.key.toString()}>
                 {col.render

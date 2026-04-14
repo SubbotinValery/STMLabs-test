@@ -1,4 +1,4 @@
-import { useState, useRef, type ReactNode } from 'react';
+import { useState, useRef, useEffect, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 interface TooltipProps {
@@ -15,7 +15,7 @@ export function Tooltip({
   children,
   content,
   positionY = 'top',
-  positionX = 'right',
+  positionX = 'center',
   offsetX = 10,
   offsetY = 10,
   delay = 300,
@@ -96,6 +96,26 @@ export function Tooltip({
 
     return transforms[`${positionY}_${positionX}`] || 'translate(-50%, -50%)';
   };
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const updatePosition = () => {
+      if (childRef.current) {
+        const rect = childRef.current.getBoundingClientRect();
+        const { top, left } = calculatePosition(rect, positionY, positionX, offsetX, offsetY);
+        setCoords({ top, left });
+      }
+    };
+
+    window.addEventListener('scroll', updatePosition);
+    window.addEventListener('resize', updatePosition);
+
+    return () => {
+      window.removeEventListener('scroll', updatePosition);
+      window.removeEventListener('resize', updatePosition);
+    };
+  }, [isVisible, positionY, positionX, offsetX, offsetY]);
 
   return (
     <>

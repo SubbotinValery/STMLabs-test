@@ -2,6 +2,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App.tsx';
 import './shared/styles/reset.css';
+import './shared/styles/variables.css';
+import './shared/styles/mixins.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
